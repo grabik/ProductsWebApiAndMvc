@@ -1,0 +1,73 @@
+﻿@model IEnumerable<MVCApp.Models.MVCProductsModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<br/>
+
+<h2> Product List </h2>
+
+<br />
+<p>
+   <a href="@Url.Action("AddOrEdit","Products")" class="btn btn-default"> <i class="fa fa-plus"> </i>Create New Product
+   <a href="@Url.Action("Index","Categories")" class="btn btn-default"> <i class="fa fa-plus"> </i>Create New Category
+</p>
+<table class="table table-striped">
+    <thead class="table-heading">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Short_Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Short_Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>
+        <td>
+            <a href="@Url.Action("AddOrEdit", "Products", new { id = item.ID})" class="btn btn-default"><i class=" fa fa-pencil"></i> Edit </a>
+            <a href="@Url.Action("Delete", "Products", new { id = item.ID})" class="btn btn-default"><i class=" fa fa-trash"></i> Delete </a>
+           <!---- <a onclick="Delete(@item.ID)" class="btn btn-default"><i class=" fa fa-trash"></i> Delete </a>-->
+        </td>
+    </tr>
+}
+
+</table>
+
+@section scripts {
+    <script>
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '')
+                alertify.success(successMessage);
+        });
+
+        function Delete (id) {
+            alertify.confirm('Web Api Product Operations', 'Are You Shure to Delete this Record? ', function () {
+                window.location.href = '@Url.Action("Delete", "Products")/' + id;
+            });
+        }
+    </script>
+    }
